@@ -1,24 +1,25 @@
 #include "sort.h"
 
 /**
- * quick_sort - implements a quicksort algorithm
- * @arr: array to be sorted
- * @size: size of the array
+ * quick_sort - Sorts an array of integers using the quicksort algorithm.
+ * @array: Pointer to the array to be sorted.
+ * @size: The number of elements in the array.
  */
-void quick_sort(int *arr, size_t size)
+void quick_sort(int *array, size_t size)
 {
-	if (!arr || size < 2)
+	if (!array || size < 2)
 		return;
 
-	my_sort_recursive(arr, 0, size - 1, size);
+	/* Call the recursive sorting function */
+	my_recursive_quick_sort(array, 0, size - 1, size);
 }
 
 /**
- * my_swap - swaps 2 elements
- * @a: first element to swap
- * @b: second element to swap
+ * swap - Swaps two integer values.
+ * @a: Pointer to the first integer.
+ * @b: Pointer to the second integer.
  */
-void my_swap(int *a, int *b)
+void swap(int *a, int *b)
 {
 	int temp = *a;
 	*a = *b;
@@ -26,57 +27,58 @@ void my_swap(int *a, int *b)
 }
 
 /**
- * my_lomuto_partition - splits given array into partition then sorts
- * @arr: array to sort
- * @left: first index
- * @right: last index
- * @size: size of array
- * Return: index of the pivot element
+ * lomuto_partition - Partitions an array and returns the pivot index.
+ * @array: Pointer to the array to be partitioned.
+ * @left: The leftmost index of the partition.
+ * @right: The rightmost index of the partition.
+ * @size: The size of the array.
+ *
+ * Return: The index of the pivot element.
  */
-int my_lomuto_partition(int *arr, int left, int right, size_t size)
+int lomuto_partition(int *array, int left, int right, size_t size)
 {
 	int pivot, idx, j;
 
-	pivot = arr[right];
+	pivot = array[right];
 	idx = left;
 
 	for (j = left; j < right; j++)
 	{
-		if (arr[j] < pivot)
+		if (array[j] < pivot)
 		{
-			if (idx != j && arr[idx] != arr[right])
+			if (idx != j && array[idx] != array[right])
 			{
-				my_swap(&arr[idx], &arr[j]);
-				print_array(arr, size);
+				swap(&array[idx], &array[j]);
+				print_array(array, size);
 			}
 			idx++;
 		}
 	}
 
-	if (idx != right && arr[idx] != arr[right])
+	if (idx != right && array[idx] != array[right])
 	{
-		my_swap(&arr[idx], &arr[right]);
-		print_array(arr, size);
+		swap(&array[idx], &array[right]);
+		print_array(array, size);
 	}
 
 	return (idx);
 }
 
 /**
- * my_sort_recursive - recursively sorts given algorithm
- * @arr: array to sort
- * @left: first index
- * @right: last index
- * @size: size of array
+ * my_recursive_quick_sort - Recursively sorts an array using quicksort.
+ * @array: Pointer to the array to be sorted.
+ * @left: The leftmost index of the subarray.
+ * @right: The rightmost index of the subarray.
+ * @size: The size of the array.
  */
-void my_sort_recursive(int *arr, int left, int right, size_t size)
+void my_recursive_quick_sort(int *array, int left, int right, size_t size)
 {
 	int pivot;
 
 	if (left < right)
 	{
-		pivot = my_lomuto_partition(arr, left, right, size);
-		my_sort_recursive(arr, left, pivot - 1, size);
-		my_sort_recursive(arr, pivot + 1, right, size);
+		pivot = lomuto_partition(array, left, right, size);
+		my_recursive_quick_sort(array, left, pivot - 1, size);
+		my_recursive_quick_sort(array, pivot + 1, right, size);
 	}
 }
